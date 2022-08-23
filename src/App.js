@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import './App.css';
-import axios from "axios";
+import AutoComplete from "./Components/Autocomplete";
 
 function App() {
     const CLIENT_ID = "92d837c891cd4132997608650139a97b"
@@ -9,8 +9,7 @@ function App() {
     const RESPONSE_TYPE = 'token'
 
     const [token, setToken] = useState("")
-    const [searchKey, setSearchKey] = useState("")
-    const [artists, setArtists] = useState([])
+
     const logout = () => {
       setToken("")
       window.localStorage.removeItem("token")
@@ -34,46 +33,18 @@ function App() {
 
   }, [])
 
-  const searchArtists = async (e) => {
-    e.preventDefault()
-      const {data} = await axios.get("https://api.spotify.com/v1/search", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        params: {
-          q: searchKey,
-          type: "artist"
-        }
-      })
-      console.log(data)
-      setArtists(data.artists.items)
-  }
-
-  const renderArtists = () => {
-    return artists.map(artist => (
-        <div key={artist.id}>
-            {artist.images.length ? <img width={"100%"} src={artist.images[0].url} alt=""/> : <div>No Image</div>}
-            {artist.name}
-        </div>
-    ))
-}
     return (
       <div className="App">
         <header className="App-header">
           <h1>Spotify Header</h1>
           {!token ?
-                    <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Login
-                        to Spotify</a>
+                    <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Login to Spotify</a>
                     : <button onClick={logout}>Logout</button>}
 
 
           {token ?
-            <form onSubmit={searchArtists}>
-              <input type = 'text' onChange={e =>setSearchKey(e.target.value)}/>
-              <button type="submit"> Search </button>
-            </form> :
+            <AutoComplete token = {token}/> :
             <h2>Please Login</h2>}
-            {renderArtists()}
         </header>
       </div>
     );
