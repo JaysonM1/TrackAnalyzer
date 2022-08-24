@@ -1,5 +1,7 @@
 import axios from "axios";
 
+let token = window.localStorage.getItem("token")
+
 function getTrackSuggestionList(rawData){
       const trackLists = rawData.tracks.items;
       var resultNames = []
@@ -8,10 +10,10 @@ function getTrackSuggestionList(rawData){
       }
       return resultNames
 }
-export async function suggestionTracks (searchKey, token){
+export async function suggestionTracks (searchKey){
       var {data} = await axios.get("https://api.spotify.com/v1/search", {
         headers: {
-          Authorization: `Bearer ${token['token']}`
+          Authorization: `Bearer ${token}`
         },
         params: {
           q: searchKey,
