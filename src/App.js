@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import './App.css';
-import SuggestionSearch from "./Components/SuggestionSearch/Autocomplete";
 
 function App() {
     const CLIENT_ID = "92d837c891cd4132997608650139a97b"
@@ -41,9 +40,6 @@ function App() {
                   <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Login to Spotify</a>
                   : <button className = "logout-button" onClick={logout}>Logout</button>}
         </header>
-
-          {token ?
-            <SuggestionSearch/> : null}
       </div>
     );
 }
